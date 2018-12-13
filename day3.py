@@ -1,4 +1,4 @@
-file = open("day3.txt")
+file = open("input\\day3.txt")
 map = {}
 for line in file:
     idSplit = line.split(" @ ")
@@ -12,7 +12,7 @@ for line in file:
             else:
                 map[(i, j)] = False
 file.close()
-file = open("day3.txt")
+file = open("input\\day3.txt")
 for line in file:
     idSplit = line.split(" @ ")
     dimensionAndPositionSplit = idSplit[1].split(": ")

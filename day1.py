@@ -3,7 +3,7 @@ firstIteration = True
 map = {}
 found = False
 while not found:
-    file = open("day1.txt")
+    file = open("input\\day1.txt")
     for line in file:
         if line[0]=="+":
             frequency += int(line[1:])
