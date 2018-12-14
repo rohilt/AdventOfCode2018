@@ -61,3 +61,17 @@ class Time:
                             return False
                         else:
                             print("same time")
+
+input = {}
+file = open("input/day4.txt")
+for line in file:
+    timeContent = line.split("] ")
+    time = Time(int(timeContent[0][1:4]), int(timeContent[0][6:7])), int(timeContent[0][9:10]), int(timeContent[0][12:13]), int(timeContent[0][15:16]))
+    if timeContent[1][0:4] == "Guard":
+        guardInfo = timeContent[1].split(" ")
+        input[time] = int(timeContent[1][1:])
+    elif timeContent[1][0:4] == "wakes":
+        input[time] = -1
+    else:
+        input[time] = -2
+file.close()
