@@ -4,6 +4,14 @@ class Guard:
         self.minutesAsleep = {}
         for x in range(60):
             self.minutesAsleep[x] = 0
+    def getMinuteAndFrequencyMostAsleep(self):
+        maxMinute = -1
+        max = 0
+        for x in self.minutesAsleep:
+            if self.minutesAsleep[x] > max:
+                max = self.minutesAsleep[x]
+                maxMinute = x
+        return max, maxMinute
     def getMinuteMostAsleep(self):
         maxMinute = -1
         max = 0
@@ -17,14 +25,6 @@ class Guard:
         for x in self.minutesAsleep:
             total += self.minutesAsleep[x]
         return total
-
-class Duration:
-    def __init__(self, day, hour, minute):
-        self.day = day
-        self.hour = hour
-        self.minute = minute
-    def getMinutes():
-        return (day * 24 * 60 + hour * 60 + minute)
 
 class Time:
     def __init__(self, year, month, day, hour, minute):
@@ -96,15 +96,10 @@ timeBefore = 0
 for key in sorted(input):
     if input[key] > 0:
         guardsOnShift.append(input[key])
-        print("Added Guard ", end="")
-        print(input[key])
     elif input[key] == -2:
         timeBefore = key.minute
-        print("Fell asleep at ", end="")
-        print(key.minute)
     else:
         guardOnDuty = guardsOnShift.pop()
-        print(key.minute - timeBefore)
         if guardOnDuty in guardsList:
             for x in range(timeBefore, key.minute):
                 guardsList[guardOnDuty].minutesAsleep[x] += 1
@@ -121,3 +116,17 @@ for guardID in guardsList:
         maxGuard = guardID
 minuteMostAsleepOfMax = guardsList[maxGuard].getMinuteMostAsleep()
 print(maxGuard*minuteMostAsleepOfMax) # Part A
+
+minutesMostAsleepOfGuards = {}
+for guardID in guardsList:
+    max, maxMinute = guardsList[guardID].getMinuteAndFrequencyMostAsleep()
+    minutesMostAsleepOfGuards[guardID] = (max, maxMinute)
+guardMostFrequentlyAsleep = 0
+minuteMostFrequentlyAsleep = 0
+frequency = 0
+for guardID in minutesMostAsleepOfGuards:
+    if minutesMostAsleepOfGuards[guardID][0] > frequency:
+        frequency = minutesMostAsleepOfGuards[guardID][0]
+        minuteMostFrequentlyAsleep = minutesMostAsleepOfGuards[guardID][1]
+        guardMostFrequentlyAsleep = guardID
+print(guardMostFrequentlyAsleep*minuteMostFrequentlyAsleep) # Part B
