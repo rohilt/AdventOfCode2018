@@ -28,6 +28,16 @@ class Time:
         self.day = day
         self.hour = hour
         self.minute = minute
+    def printTime(self):
+        print(self.year, end="")
+        print("-", end="")
+        print(self.month, end="")
+        print("-", end="")
+        print(self.day, end="")
+        print(" ", end="")
+        print(self.hour, end="")
+        print(":", end="")
+        print(self.minute)
     def __gt__(self, rhs):
         minDiff = self.minute - rhs.minute
         hourDiff = self.hour - rhs.hour
@@ -66,12 +76,15 @@ input = {}
 file = open("input/day4.txt")
 for line in file:
     timeContent = line.split("] ")
-    time = Time(int(timeContent[0][1:4]), int(timeContent[0][6:7])), int(timeContent[0][9:10]), int(timeContent[0][12:13]), int(timeContent[0][15:16]))
-    if timeContent[1][0:4] == "Guard":
+    time = Time(int(timeContent[0][1:5]), int(timeContent[0][6:8]), int(timeContent[0][9:11]), int(timeContent[0][12:14]), int(timeContent[0][15:]))
+    if timeContent[1][0:5] == "Guard":
         guardInfo = timeContent[1].split(" ")
-        input[time] = int(timeContent[1][1:])
-    elif timeContent[1][0:4] == "wakes":
+        input[time] = int(guardInfo[1][1:])
+    elif timeContent[1][0:5] == "wakes":
         input[time] = -1
     else:
         input[time] = -2
 file.close()
+for key in sorted(input):
+    key.printTime()
+    print(input[key])
