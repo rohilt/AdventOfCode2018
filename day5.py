@@ -10,9 +10,12 @@ def removeIfNeeded(list):
         list.append(lastItem)
 file = open("input/day5.txt")
 letters = file.read()
-print(len(letters))
 polymer = []
+count = 0
 for letter in letters:
     polymer.append(letter)
     removeIfNeeded(polymer)
-print(len(polymer))
+    if count > 100:
+        break
+print(len(polymer)) # Part A Solution, but 1 higher than actual answer (\n or null terminator)?
+file.close()
