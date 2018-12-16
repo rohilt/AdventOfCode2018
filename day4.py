@@ -4,14 +4,19 @@ class Guard:
         self.minutesAsleep = {}
         for x in range(60):
             self.minutesAsleep[x] = 0
-    def getMinuteMostAsleep():
+    def getMinuteMostAsleep(self):
         maxMinute = -1
         max = 0
-        for x in minutesAsleep:
-            if minutesAsleep[x] > max:
-                max = minutesAsleep[x]
+        for x in self.minutesAsleep:
+            if self.minutesAsleep[x] > max:
+                max = self.minutesAsleep[x]
                 maxMinute = x
         return maxMinute
+    def getTotalMinutesAsleep(self):
+        total = 0
+        for x in self.minutesAsleep:
+            total += self.minutesAsleep[x]
+        return total
 
 class Duration:
     def __init__(self, day, hour, minute):
@@ -85,6 +90,34 @@ for line in file:
     else:
         input[time] = -2
 file.close()
+guardsOnShift = []
+guardsList = {}
+timeBefore = 0
 for key in sorted(input):
-    key.printTime()
-    print(input[key])
+    if input[key] > 0:
+        guardsOnShift.append(input[key])
+        print("Added Guard ", end="")
+        print(input[key])
+    elif input[key] == -2:
+        timeBefore = key.minute
+        print("Fell asleep at ", end="")
+        print(key.minute)
+    else:
+        guardOnDuty = guardsOnShift.pop()
+        print(key.minute - timeBefore)
+        if guardOnDuty in guardsList:
+            for x in range(timeBefore, key.minute):
+                guardsList[guardOnDuty].minutesAsleep[x] += 1
+        else:
+            guardsList[guardOnDuty] = Guard(guardOnDuty)
+            for x in range(timeBefore, key.minute):
+                guardsList[guardOnDuty].minutesAsleep[x] += 1
+        guardsOnShift.append(guardOnDuty)
+maxGuard = 0
+maxMinutes = 0
+for guardID in guardsList:
+    if guardsList[guardID].getTotalMinutesAsleep() > maxMinutes:
+        maxMinutes = guardsList[guardID].getTotalMinutesAsleep()
+        maxGuard = guardID
+minuteMostAsleepOfMax = guardsList[maxGuard].getMinuteMostAsleep()
+print(maxGuard*minuteMostAsleepOfMax) # Part A
