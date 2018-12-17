@@ -27,4 +27,4 @@ for x in lettersList:
             removeIfNeeded(polymer)
     if len(polymer) < minLength:
         minLength = len(polymer)
-print(minLength) # Part B Solution?
+print(minLength) # Part B Solution, again 1 higher
