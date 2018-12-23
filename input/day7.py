@@ -1,3 +1,22 @@
+class Worker:
+    def __init__(self):
+        self.timeOccupied = 0
+        self.letterAssigned = ''
+    def assignStep(self, letter):
+        self.letterAssigned = letter
+        self.timeOccupied = ord(letter) - 4
+    def passTime(self):
+        if self.timeOccupied > 0:
+            self.timeOccupied -= 1
+    def completedStep(self):
+        return self.timeOccupied == 0
+    def returnStep(self):
+        return self.letterAssigned
+
+timeTaken = 0
+workersIdle = [Worker() for x in range(5)]
+workersBusy = []
+
 file = open("input/day7.txt")
 prereqs = {}
 alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
@@ -8,25 +27,39 @@ for line in file:
     prereqs[split[7]].append(split[1])
 result = []
 while len(result) != len(prereqs):
-    completed = True
+    prereqsCompleted = True
     for letter in alphabet:
+        workerAlreadyDoingStep = False
+        for x in workersBusy:
+            if x.letterAssigned == letter:
+                workerAlreadyDoingStep = True
+        if workerAlreadyDoingStep:
+            continue
         if letter in result:
             continue
-        completed = True
+        prereqsCompleted = True
         for x in prereqs[letter]:
             if x not in result:
-                completed = False
-                print(x, end="")
-                print(" not completed, so ", end="")
-                print(letter, end="")
-                print(" cannot be completed")
+                prereqsCompleted = False
                 break
-        if completed:
-            print(letter, end="")
-            print(" completed")
-            result.append(letter)
-            break
-        #if prereqs[letter] are all completed and in result
-            #then place that letter next into completed/result, restart alphabet
+        if prereqsCompleted and len(workersIdle) > 0:
+            workerNowBusy = workersIdle.pop()
+            workerNowBusy.assignStep(letter)
+            workersBusy.append(workerNowBusy)
+            if len(workersIdle) == 0:
+                break
+    for x in workersBusy:
+        x.passTime()
+    newWorkersBusy = []
+    for x in workersBusy:
+        if x.completedStep():
+            result.append(x.returnStep())
+            workersIdle.append(x)
+        else:
+            newWorkersBusy.append(x)
+    workersBusy = newWorkersBusy
+    timeTaken += 1
 for x in result:
-    print(x, end="")
+    print(x, end="") # Part A (used to be, see commit for Part 1)
+print()
+print(timeTaken) # Part B
