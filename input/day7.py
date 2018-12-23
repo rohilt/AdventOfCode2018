@@ -6,4 +6,10 @@ for letter in alphabet:
 for line in file:
     split = line.split(" ")
     prereqs[split[7]].append(split[1])
-print(prereqs)
+result = ""
+while len(result) != 26:
+    nextStep = ""
+    for letter in alphabet:
+        #if prereqs[letter] are all completed and in result
+            #then place that letter next into completed/result, restart alphabet
+#print result
