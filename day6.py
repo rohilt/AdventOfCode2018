@@ -8,5 +8,5 @@ for x in range(0, 400):
         if (x, y) in tuples:
             print("X", end="")
         else:
-            print("O", end="")
+            print(" ", end="")
     print("")
