@@ -1,3 +1,5 @@
+import csv
+
 class CircularList:
     def __init__(self):
         self.list = []
@@ -43,11 +45,14 @@ class MarbleGame(CircularList):
             self.list.insert(self.curr, self.currNumber)
             return 0
 
-players = PlayersList()
-game = MarbleGame()
-while game.currNumber <= 7205900: # divide by 100 to get to Part A instead
-    players.addPlayerScore(game.playerTurn())
-    players.nextPlayer()
-    if game.currNumber % 100 == 0:
-        print(game.currNumber)
-print(max(players.list)) # Part B
+file = open("output/day9.csv", mode = 'w')
+writer = csv.writer(file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+for x in range(10000):
+    players = PlayersList()
+    game = MarbleGame()
+    while game.currNumber <= x:
+        players.addPlayerScore(game.playerTurn())
+        players.nextPlayer()
+    writer.writerow([x, max(players.list)])
+    print(x)
+file.close()
