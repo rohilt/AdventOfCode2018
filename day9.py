@@ -45,7 +45,9 @@ class MarbleGame(CircularList):
 
 players = PlayersList()
 game = MarbleGame()
-while game.currNumber <= 72059:
+while game.currNumber <= 7205900: # divide by 100 to get to Part A instead
     players.addPlayerScore(game.playerTurn())
     players.nextPlayer()
-print(max(players.list)) # Part A
+    if game.currNumber % 100 == 0:
+        print(game.currNumber)
+print(max(players.list)) # Part B
