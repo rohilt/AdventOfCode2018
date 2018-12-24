@@ -1,9 +1,22 @@
 # Node Class defined
 class Node:
-    def __init__(self, meta):
-        self.sum = 0
-        for x in meta:
-            self.sum += x
+    def __init__(self):
+        self.meta = []
+        self.children = []
+    def setMeta(self, meta):
+        self.meta = meta
+    def setChildren(self, children):
+        self.children = children
+    def getValue(self):
+        sum = 0
+        if len(self.children) == 0:
+            for x in self.meta:
+                sum += x
+        else:
+            for x in self.meta:
+                if x <= len(self.children):
+                    sum += self.children[x - 1].getValue()
+        return sum
 
 # Input processing
 loc = 0
@@ -13,7 +26,6 @@ for line in input:
     for x in line.split(' '):
         data.append(x)
 input.close()
-nodes = []
 
 # Helper Function
 def readNext():
@@ -28,14 +40,13 @@ def generateNode():
     meta = []
     numChilds = readNext()
     numMeta = readNext()
+    node = Node()
     for x in range(numChilds):
-        generateNode()
+        node.children.append(generateNode())
     for x in range(numMeta):
-        meta.append(readNext())
-    nodes.append(Node(meta))
+        node.meta.append(readNext())
+    return node
 
-generateNode()
-sum = 0
-for x in nodes:
-    sum += x.sum
-print(sum)
+# Part B
+baseNode = generateNode()
+print(baseNode.getValue())
